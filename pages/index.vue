@@ -9,8 +9,17 @@
 </template>
 
 <script setup lang="ts">
-const svgpaths = ref<string[]>([
-  "M 5 10 L 10 15 L 20 10 L 5 10",
-  "M 5 20 L 10 35 L 90 15 L 20 100 L 5 20",
+import type { TPath } from "@/components/Canvas.vue";
+
+const svgpaths = ref<TPath[]>([
+  {
+    commands: [
+      { attribute: "M", x: 10, y: 20 },
+      { attribute: "L", x: 40, y: 20 },
+      { attribute: "L", x:80, y: 40 },
+      { attribute: "L", x: 60, y: 80 },
+      { attribute: "L", x: 10, y: 20 },
+    ],
+  },
 ]);
 </script>
