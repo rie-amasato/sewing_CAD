@@ -2,7 +2,7 @@
   <Menubar />
   <div class="container red grid">
     <div class="container white s1 e4">
-      <Canvas :paths="svgpaths" />
+      <Canvas :paths="svgpaths" @select="canvasSelect" @move="canvasMove" />
     </div>
     <div class="container white s4 e5">要素りすと</div>
   </div>
@@ -16,10 +16,26 @@ const svgpaths = ref<TPath[]>([
     commands: [
       { attribute: "M", x: 10, y: 20 },
       { attribute: "L", x: 40, y: 20 },
-      { attribute: "L", x:80, y: 40 },
+      { attribute: "L", x: 80, y: 40 },
       { attribute: "L", x: 60, y: 80 },
       { attribute: "L", x: 10, y: 20 },
     ],
   },
 ]);
+
+const canvasSelect = (num) => {
+  svgpaths.value[num[0]].commands[num[1]].selected = true;
+};
+
+const canvasMove = (position) => {
+  svgpaths.value.forEach((path) => {
+    path.commands.forEach((command) => {
+      if (command.selected) {
+        command.selected = false;
+        command.x = position[0];
+        command.y = position[1];
+      }
+    });
+  });
+};
 </script>
