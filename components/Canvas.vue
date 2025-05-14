@@ -15,12 +15,27 @@
     <svg
       width="100%"
       height="100%"
-      viewbox="0 0 200 100"
+      :viewbox="`0 0 ${svgViewboxSize[0]} ${svgViewboxSize[1]}`"
       stroke-width="3"
       id="idSvgCanvas"
       @touchstart="clickCanvas"
       @touchend="unclickCanvas"
     >
+      <path
+        v-for="x in arangeX"
+        :d="`M 0 ${x} L ${svgViewboxSize[0]} ${x}`"
+        stroke="#999"
+        stroke-width="2"
+        fill="#999"
+      ></path>
+      <path
+        v-for="y in arangeY"
+        :d="`M 0 ${y} L ${svgViewboxSize[1]} ${y}`"
+        stroke="#999"
+        stroke-width="2"
+        fill="#999"
+      ></path>
+
       <template v-for="(path, pi) in paths">
         <path :d="mkd(path)" stroke="blue" fill="#ccc"></path>
         <template v-for="(command, ci) in path.commands">
@@ -54,8 +69,22 @@ export type TPath = {
 
 const props = defineProps<{
   paths: TPath[];
+  moveunit: number;
 }>();
 const emits = defineEmits();
+
+const svgViewboxSize = ref<number[]>([200, 100]);
+const arangeX = ref<number[]>([]);
+const arangeY = ref<number[]>([]);
+
+onMounted(() => {
+  for (let i = 0; (i += props.moveunit); i < svgViewboxSize.value[0]) {
+    arangeX.value.push(i);
+  }
+  for (let i = 0; (i += props.moveunit); i < svgViewboxSize.value[1]) {
+    arangeY.value.push(i);
+  }
+});
 
 const mkd = (path: TPath): string => {
   return path.commands
