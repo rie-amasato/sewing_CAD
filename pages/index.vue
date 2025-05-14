@@ -23,11 +23,11 @@ const svgpaths = ref<TPath[]>([
   },
 ]);
 
-const canvasSelect = (num) => {
+const canvasSelect = (num: number[]) => {
   svgpaths.value[num[0]].commands[num[1]].selected = true;
 };
 
-const canvasMove = (position) => {
+const canvasMove = (position: number[]) => {
   svgpaths.value.forEach((path) => {
     path.commands.forEach((command) => {
       if (command.selected) {

@@ -67,6 +67,7 @@ const mkd = (path: TPath): string => {
 
 const isDrag = ref<boolean>(false);
 const clickCanvas = (e: any) => {
+  e.preventDefault();
   if (e.target.tagName == "circle") {
     emits("select", [e.target.dataset.pi, e.target.dataset.ci]);
   }
@@ -75,12 +76,13 @@ const clickCanvas = (e: any) => {
 const unclickCanvas = (e: any) => {
   isDrag.value = false;
 
-  const canvasElm = document
-    .getElementById("idSvgCanvas")
-    .getBoundingClientRect();
+  const canvasElm = document.getElementById("idSvgCanvas");
+  if (!canvasElm) return;
 
-  const touchY = e.changedTouches[0].clientY - canvasElm.top;
-  const touchX = e.changedTouches[0].clientX - canvasElm.left;
+  const canvasClienRect = canvasElm.getBoundingClientRect();
+
+  const touchY = e.changedTouches[0].clientY - canvasClienRect.top;
+  const touchX = e.changedTouches[0].clientX - canvasClienRect.left;
 
   emits("move", [touchX, touchY]);
 };
